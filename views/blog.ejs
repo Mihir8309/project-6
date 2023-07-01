@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blog</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <style>
+            *{
+                color: rgb(37, 51, 52);
+                text-decoration: none;
+            }
+            a{
+                text-decoration: none;
+            }
+            body{
+                width: 100%;
+                height: 90vh;
+                background-image: url('https://images.pexels.com/photos/4240541/pexels-photo-4240541.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                font-size: 20px;
+            }
+            h1{
+                text-align: center;
+                font-size: 60px;
+                font-weight: 700;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: rgba(144, 176, 205, 0.912);
+                text-shadow: 0px 5px 3px rgb(37, 51, 52);
+            }
+            table{
+                margin: 30px;
+                border-collapse: collapse;
+                backdrop-filter: blur(4px);
+                background-color: rgba(144, 176, 205, 0.512);
+            }
+            table tr td, .box th{
+                border: 4px solid rgb(223, 215, 206);
+                padding: 5px 10px;
+            }
+            .box th{
+                line-height: 3;
+                text-transform: uppercase;
+                text-align: center;
+                background-color: rgb(223, 208, 183);
+                border: 4px solid rgba(144, 176, 205, 0.512);
+            }
+            .box{
+                width: 50%;
+                text-align: center;
+            }
+            input{
+                background-color: transparent;
+                border: none;
+                outline: none;
+                font-size: 20px;
+            }
+            .btn{
+                text-transform: uppercase;
+                font-size: 16px;
+                font-weight: 600;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                padding: 5px 10px;
+                border: 2px solid rgb(223, 215, 206);
+                box-shadow: 0px 0px 4px 0px rgb(174, 174, 174);
+                cursor: pointer;
+                background-color: rgb(223, 208, 183);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Blog</h1>
+        <form method="post" action="/insertData" enctype="multipart/form-data">
+            <input type="hidden" name="editid" value="<%= single.id %>"/>
+            <table border="1">
+                <tr>
+                    <td>Title</td>
+                    <td><input type="text" value="<%= single.title %>" name="title"></td>
+                </tr>
+                <tr>
+                    <td>Discription</td>
+                    <td><input type="text"  value="<%= single.description %>" name="description"></td>
+                </tr>
+                <tr>
+                    <td>File Upload</td>
+                    <td>
+                        <input type="file" name="logo">
+                        <% if(single) { %>
+                            <img src="<%= single.logo %>" width="100"/>
+                        <% } %>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> 
+                        <% if(!single) { %>
+                            <input type="submit" class="btn">
+                        <% } else { %>
+                            <input type="submit" value="Edit" class="btn">
+                        <% } %>
+                    </td>
+                </tr>
+            </table>
+        </form><br><br>
+
+        <table class="box">
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Action</th>
+            </tr>
+
+            <% user.map((val,i)=>{ 
+                const {id,title,description,logo} = val;
+                i++;
+            %>
+            <tr>
+                <td><%= i %></td>
+                <td><%= title %></td>
+                <td><%= description %></td>
+                <td>
+                    <img src="<%= logo  %>" width="100"/>
+                </td>
+                <td class="text-center">
+                    <a href="/deleteData?id=<%= id %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                            <path
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                        </svg>
+                    </a> ||
+                    <a href="/editData?id=<%= id %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                            <path fill-rule="evenodd"
+                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+            <% }) %>
+        </table>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </body>
+</html>
+
